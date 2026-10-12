@@ -2508,6 +2508,139 @@ a svg {
     gap: 11px;
   }
 }
+
+/* ==========================================================================
+   Cyberpunk Visual Effects & Interactive Enhancements
+   ========================================================================== */
+
+.spotlight-card {
+  position: relative;
+  transform: perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transition:
+    transform 0.25s cubic-bezier(0.2, 0, 0, 1),
+    border-color 0.3s,
+    box-shadow 0.3s;
+  will-change: transform;
+}
+
+.spotlight-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    320px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
+    rgba(196, 243, 108, 0.08),
+    transparent 65%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+}
+
+.spotlight-card::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(
+    280px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
+    rgba(196, 243, 108, 0.45),
+    transparent 65%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 3;
+}
+
+.spotlight-card:hover::before,
+.spotlight-card:hover::after {
+  opacity: 1;
+}
+
+.project-card.spotlight-card:hover {
+  transform: perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-6px);
+  border-color: #657c48;
+  box-shadow: 0 20px 35px #0004, 0 0 25px rgba(196, 243, 108, 0.12);
+}
+
+.shimmer-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-button::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 40%;
+  height: 200%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transform: rotate(25deg);
+  pointer-events: none;
+  animation: shimmer-sweep 5s infinite;
+}
+
+@keyframes shimmer-sweep {
+  0%, 75% {
+    transform: translateX(-150%) rotate(25deg);
+  }
+  100% {
+    transform: translateX(450%) rotate(25deg);
+  }
+}
+
+.stat-interactive {
+  transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1);
+  cursor: default;
+}
+
+.stat-interactive:hover {
+  transform: translateY(-4px) scale(1.04);
+}
+
+.stat-interactive:hover strong {
+  color: #ffffff;
+  text-shadow: 0 0 15px rgba(196, 243, 108, 0.6);
+}
+
+.tag-hover {
+  transition:
+    transform 0.2s,
+    background-color 0.2s,
+    border-color 0.2s,
+    color 0.2s;
+  cursor: default;
+}
+
+.tag-hover:hover {
+  transform: translateY(-2px);
+  background: rgba(196, 243, 108, 0.15) !important;
+  border-color: rgba(196, 243, 108, 0.6) !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 8px rgba(196, 243, 108, 0.25);
+}
+
+.motion-paused .spotlight-card {
+  transform: none !important;
+}
+
+.motion-paused .shimmer-button::after {
+  animation: none !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

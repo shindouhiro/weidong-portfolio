@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Project } from '@resume/content'
-import { ArrowUpRight, Check, X } from '@lucide/vue'
+import { ArrowUpRight, Check, Sparkles, X } from '@lucide/vue'
 import { projects } from '@resume/content'
 import {
   DialogClose,
@@ -13,14 +13,19 @@ import {
   DialogTrigger,
 } from 'reka-ui'
 import { computed, shallowRef } from 'vue'
+import { useCardSpotlight } from '../../composables/useCardSpotlight'
+import GlitchText from '../effects/GlitchText.vue'
 import ProjectVisual from './ProjectVisual.vue'
 
 const category = shallowRef('all')
+const { handleCardMouseMove, handleCardMouseLeave } = useCardSpotlight()
+
 const filters = [
   { id: 'all', label: '全部项目', count: '03' },
   { id: 'ai', label: 'AI 应用', count: '02' },
   { id: 'visual', label: '可视化', count: '01' },
 ]
+
 const filteredProjects = computed<Project[]>(() =>
   projects.filter(
     project =>
@@ -33,11 +38,15 @@ const filteredProjects = computed<Project[]>(() =>
   <section id="projects" class="section page-width">
     <div class="section-heading">
       <div>
-        <span class="section-eyebrow mono">01 / SELECTED WORK</span>
+        <span class="section-eyebrow mono">
+          <GlitchText text="01 / SELECTED WORK" />
+        </span>
         <h2>把想法，变成<span class="heading-accent">作品。</span></h2>
         <p>从工程底座到用户体验，每一行代码都有它的意义。</p>
       </div>
-      <span class="section-side-note mono">IDEAS → SYSTEMS → IMPACT <ArrowUpRight :size="18" /></span>
+      <span class="section-side-note mono">
+        IDEAS → SYSTEMS → IMPACT <ArrowUpRight :size="18" />
+      </span>
     </div>
     <div
       class="project-filters flex flex-wrap items-center gap-2"
@@ -54,11 +63,18 @@ const filteredProjects = computed<Project[]>(() =>
       >
         {{ filter.label }}<span>{{ filter.count }}</span>
       </button>
-      <span class="filter-count mono" aria-live="polite">{{ filteredProjects.length }} PROJECTS</span>
+      <span class="filter-count mono" aria-live="polite">
+        <Sparkles :size="10" class="inline mr-1 text-lime-400" />
+        {{ filteredProjects.length }} PROJECTS
+      </span>
     </div>
     <div class="project-grid">
       <DialogRoot v-for="project in filteredProjects" :key="project.id">
-        <article class="project-card">
+        <article
+          class="project-card spotlight-card"
+          @mousemove="handleCardMouseMove"
+          @mouseleave="handleCardMouseLeave"
+        >
           <DialogTrigger
             :id="`project-open-${project.id}`"
             class="project-trigger"
@@ -80,10 +96,12 @@ const filteredProjects = computed<Project[]>(() =>
               {{ project.description }}
             </p>
             <div class="project-tags">
-              <span v-for="tag in project.tags" :key="tag">{{ tag }}</span>
+              <span v-for="tag in project.tags" :key="tag" class="tag-hover">{{ tag }}</span>
             </div>
             <div class="project-metric">
-              <strong>{{ project.metric }}</strong><span>{{ project.metricLabel }}</span><span class="project-details-label">项目详情 ↗</span>
+              <strong>{{ project.metric }}</strong>
+              <span>{{ project.metricLabel }}</span>
+              <span class="project-details-label">项目详情 ↗</span>
             </div>
           </div>
         </article>
