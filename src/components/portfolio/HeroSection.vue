@@ -14,6 +14,7 @@ const tech = [
   'Vue 3',
   'TypeScript',
   'Next.js',
+  'Spring Boot',
   'React Flow',
   'Node.js',
   'AI Engineering',
@@ -46,8 +47,8 @@ const tech = [
           <span class="title-period">*</span>
         </h1>
         <p class="hero-description">
-          以前端为起点，以创造为驱动。<br />专注 AI
-          应用、工程架构与可视化，让复杂的技术成为流畅的体验。
+          以前端为起点，连接完整的业务交付。<br />专注企业应用、AI
+          交互与工程架构，让复杂的技术成为可靠、流畅的体验。
         </p>
         <div class="hero-buttons flex flex-wrap items-center gap-3">
           <a
@@ -74,7 +75,7 @@ const tech = [
             :href="profile.website"
             target="_blank"
             rel="noopener noreferrer"
-          ><Globe :size="16" /> 个人博客 <ArrowUpRight :size="12" /></a>
+          ><Globe :size="16" /> 作品演示 <ArrowUpRight :size="12" /></a>
           <span class="hero-social-divider" />
           <span class="hero-location">开放视野 · 不限地点</span>
         </div>
@@ -99,7 +100,7 @@ const tech = [
         <strong>30%<span>↑</span></strong><span>工程构建效率提升</span>
       </div>
       <div class="hero-stat stat-interactive">
-        <strong>O(1)</strong><span>AI 增量渲染复杂度</span>
+        <strong>O(1)</strong><span>AI 每次增量更新复杂度</span>
       </div>
       <a id="hero-scroll" href="#projects" class="scroll-hint mono">
         <GlitchText text="SCROLL TO EXPLORE" :animated="animated" :speed="35" />
@@ -108,6 +109,6 @@ const tech = [
     </div>
   </section>
 
-  <!-- Infinite Tech Toolkit Marquee -->
+  <!-- 技术栈循环展示 -->
   <TechMarquee :tech="tech" :animated="animated" />
 </template>

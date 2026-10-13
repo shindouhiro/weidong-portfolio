@@ -88,7 +88,7 @@ onUnmounted(() => clearTimeout(timeout))
           :href="profile.website"
           target="_blank"
           rel="noopener noreferrer"
-        ><Globe :size="16" />博客 <ArrowUpRight :size="12" /></a>
+        ><Globe :size="16" />作品演示 <ArrowUpRight :size="12" /></a>
       </div>
     </div>
   </section>

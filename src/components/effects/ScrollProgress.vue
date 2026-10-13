@@ -34,7 +34,7 @@ onUnmounted(() => {
 
 <template>
   <div class="scroll-hud-container" aria-hidden="true">
-    <!-- Top Glowing Laser Beam -->
+    <!-- 顶部发光进度条 -->
     <div class="scroll-progress-track">
       <div
         class="scroll-progress-bar"
@@ -44,7 +44,7 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <!-- Floating Sci-Fi HUD Float Pill -->
+    <!-- 悬浮滚动进度提示 -->
     <div
       class="scroll-hud-pill mono"
       :class="{ 'is-visible': showBackTop }"
@@ -56,7 +56,7 @@ onUnmounted(() => {
       </div>
       <span class="hud-divider">/</span>
       <span class="hud-percent">{{ progress }}%</span>
-      <button class="hud-top-btn" aria-label="回到顶部">
+      <button id="scroll-progress-back-top" class="hud-top-btn" aria-label="回到顶部">
         <ArrowUp :size="12" />
       </button>
     </div>

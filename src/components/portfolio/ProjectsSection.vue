@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Project } from '@resume/content'
-import { ArrowUpRight, Check, Sparkles, X } from '@lucide/vue'
+import type { Project, ProjectCategory } from '@resume/content'
+import { ArrowUpRight, Sparkles, X } from '@lucide/vue'
 import { projects } from '@resume/content'
 import {
   DialogClose,
@@ -15,16 +15,22 @@ import {
 import { computed, shallowRef } from 'vue'
 import { useCardSpotlight } from '../../composables/useCardSpotlight'
 import GlitchText from '../effects/GlitchText.vue'
+import ProjectCaseStudy from './ProjectCaseStudy.vue'
 import ProjectVisual from './ProjectVisual.vue'
 
-const category = shallowRef('all')
+const category = shallowRef<ProjectCategory | 'all'>('all')
 const { handleCardMouseMove, handleCardMouseLeave } = useCardSpotlight()
 
-const filters = [
-  { id: 'all', label: '全部项目', count: '03' },
-  { id: 'ai', label: 'AI 应用', count: '02' },
-  { id: 'visual', label: '可视化', count: '01' },
+const categories: { id: ProjectCategory | 'all', label: string }[] = [
+  { id: 'all', label: '全部项目' },
+  { id: 'business', label: '企业业务' },
+  { id: 'ai', label: 'AI 应用' },
+  { id: 'visual', label: '可视化' },
 ]
+const filters = categories.map(filter => ({
+  ...filter,
+  count: String(projects.filter(project => filter.id === 'all' || project.category === filter.id).length).padStart(2, '0'),
+}))
 
 const filteredProjects = computed<Project[]>(() =>
   projects.filter(
@@ -42,7 +48,7 @@ const filteredProjects = computed<Project[]>(() =>
           <GlitchText text="01 / SELECTED WORK" />
         </span>
         <h2>把想法，变成<span class="heading-accent">作品。</span></h2>
-        <p>从工程底座到用户体验，每一行代码都有它的意义。</p>
+        <p>企业业务、AI 应用与云原生编排，从复杂场景到稳定交付。</p>
       </div>
       <span class="section-side-note mono">
         IDEAS → SYSTEMS → IMPACT <ArrowUpRight :size="18" />
@@ -95,6 +101,9 @@ const filteredProjects = computed<Project[]>(() =>
             <p class="project-description">
               {{ project.description }}
             </p>
+            <p class="project-role">
+              <span>负责方向</span>{{ project.role }}
+            </p>
             <div class="project-tags">
               <span v-for="tag in project.tags" :key="tag" class="tag-hover">{{ tag }}</span>
             </div>
@@ -126,20 +135,7 @@ const filteredProjects = computed<Project[]>(() =>
               {{ project.subtitle }} · {{ project.role }}
             </DialogDescription>
             <ProjectVisual :kind="project.id" />
-            <p class="dialog-intro">
-              {{ project.description }}
-            </p>
-            <h3 class="dialog-heading">
-              我的工作与成果
-            </h3>
-            <ul class="dialog-highlights">
-              <li v-for="highlight in project.highlights" :key="highlight">
-                <Check :size="17" /><span>{{ highlight }}</span>
-              </li>
-            </ul>
-            <div class="project-tags">
-              <span v-for="tag in project.tags" :key="tag">{{ tag }}</span>
-            </div>
+            <ProjectCaseStudy :project="project" />
             <p class="dialog-note">
               成果与职责来自个人简历；上方为项目界面概念示意。
             </p>

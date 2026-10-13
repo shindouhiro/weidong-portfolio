@@ -6,6 +6,7 @@ import {
   CheckCircle2,
   Cpu,
   GitBranch,
+  GraduationCap,
   Layers,
   MessageSquare,
   Send,
@@ -13,16 +14,15 @@ import {
   Terminal,
   Workflow,
 } from '@lucide/vue'
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, shallowRef } from 'vue'
 
 const props = defineProps<{ kind: string }>()
 
-// Live typewriter for NebulaAI
-const nebulaStreamText = ref('')
-const isTyping = ref(true)
-const tokenSpeed = ref(142)
+// NebulaAI 流式文本概念演示
+const nebulaStreamText = shallowRef('')
+const isTyping = shallowRef(true)
 let streamTimer: ReturnType<typeof setTimeout> | undefined
-const fullStreamMessage = 'Thinking beyond the ordinary. Incremental AST stream active.'
+const fullStreamMessage = '增量解析持续输出，避免长文本的全量重绘，让每一次回应清晰流动。'
 
 function startStreaming() {
   if (props.kind !== 'nebula')
@@ -34,7 +34,6 @@ function startStreaming() {
   function step() {
     if (idx < fullStreamMessage.length) {
       nebulaStreamText.value = fullStreamMessage.slice(0, ++idx)
-      tokenSpeed.value = 135 + Math.floor(Math.random() * 25)
       streamTimer = setTimeout(step, 45 + Math.random() * 35)
     }
     else {
@@ -46,14 +45,14 @@ function startStreaming() {
   step()
 }
 
-// Live terminal log for CloudOS
-const cloudStep = ref(0)
+// CloudOS 工程能力概念演示
+const cloudStep = shallowRef(0)
 let cloudTimer: ReturnType<typeof setInterval> | undefined
 const cloudLogs = [
-  'JIT Mounting: dynamic link @ai/tools (0.8ms)',
-  'SSOT Dependencies verified: 0 duplicates',
-  'Iconify SVG pipeline: assets compiled',
-  'Turbopack HMR ready on port 3000',
+  'JIT Mounting · AI 脚本动态挂载',
+  'SSOT · 单源真相依赖治理',
+  'Iconify · SVG → JSON 按需加载',
+  'Angular + RxJS · 复杂业务交付',
 ]
 
 onMounted(() => {
@@ -76,15 +75,40 @@ onUnmounted(() => {
 <template>
   <div class="project-visual" :class="`visual-${kind}`" aria-hidden="true">
     <span class="visual-label mono">{{
-      kind === "cloudos"
-        ? "AI POWERED WORKSPACE"
-        : kind === "nebula"
-          ? "INTELLIGENCE, IN FLOW"
-          : "CONNECT THE COMPLEX"
+      kind === "seres"
+        ? "LEARN. ASSESS. GROW."
+        : kind === "cloudos"
+          ? "AI POWERED WORKSPACE"
+          : kind === "nebula"
+            ? "INTELLIGENCE, IN FLOW"
+            : "CONNECT THE COMPLEX"
     }}</span>
 
-    <!-- CloudOS Visual -->
-    <div v-if="kind === 'cloudos'" class="mini-window cloud-window">
+    <!-- 企业学习平台概念示意 -->
+    <div v-if="kind === 'seres'" class="mini-window learning-window">
+      <div class="mini-window-top">
+        <span><GraduationCap :size="12" /> 赛力斯 · 企业学习平台</span>
+        <span class="learning-portal">管理端 / 学员端</span>
+      </div>
+      <div class="learning-content">
+        <div class="learning-heading">
+          让学习，连接岗位成长。
+          <span class="mono">TRAINING → CAPABILITY</span>
+        </div>
+        <div class="learning-flow">
+          <div><Layers :size="16" /><strong>课程学习</strong><span>课件 / 学习跟踪</span></div>
+          <div><CheckCircle2 :size="16" /><strong>在线考试</strong><span>服务端计时 / 幂等交卷</span></div>
+          <div><GraduationCap :size="16" /><strong>培训结果</strong><span>证书 / 岗位晋升</span></div>
+        </div>
+        <div class="learning-assistant">
+          <Sparkles :size="11" /><span>AI 学习助手</span>
+          <span class="mono">SSE / AG-UI</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CloudOS 工作空间概念示意 -->
+    <div v-else-if="kind === 'cloudos'" class="mini-window cloud-window">
       <div class="mini-window-top">
         <div class="window-dots">
           <i /><i /><i />
@@ -120,7 +144,7 @@ onUnmounted(() => {
               <span>应用开发</span>
             </div>
           </div>
-          <!-- Live Terminal Output -->
+          <!-- 工程能力轮播 -->
           <div class="cloud-console mono">
             <span class="console-prompt">&gt;</span>
             <span class="console-text">{{ cloudLogs[cloudStep] }}</span>
@@ -130,11 +154,11 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <!-- NebulaAI Visual -->
+    <!-- NebulaAI 流式交互概念示意 -->
     <div v-else-if="kind === 'nebula'" class="mini-window nebula-window">
       <div class="mini-window-top">
         <span><Sparkles :size="11" /> NebulaAI Engine</span>
-        <span class="mini-online mono">● STREAM {{ tokenSpeed }} T/S</span>
+        <span class="mini-online mono">● STREAM PREVIEW</span>
       </div>
       <div class="nebula-content">
         <div class="mini-message">
@@ -156,7 +180,7 @@ onUnmounted(() => {
               <span class="type-cursor" :class="{ 'cursor-blinking': !isTyping }">▍</span>
             </div>
             <div class="mini-code">
-              const possibilities = <b>Infinity</b>; <span class="code-comment">// O(1) AST stream</span>
+              <b>Incremental Parsing</b> <span class="code-comment">// 增量更新</span>
             </div>
           </div>
         </div>
@@ -167,27 +191,24 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <!-- ATC Topology Visual -->
+    <!-- ATC 拓扑概念示意 -->
     <div v-else class="topology-preview">
       <svg viewBox="0 0 340 170" class="topology-lines">
-        <!-- Main Topology Circuit Paths -->
+        <!-- 拓扑连接路径 -->
         <path
-          id="topo-path-1"
           class="circuit-base-path"
           d="M75 80H136Q145 80 145 65V45H232"
         />
         <path
-          id="topo-path-2"
           class="circuit-base-path"
           d="M75 80H136Q145 80 145 95V120H232"
         />
         <path
-          id="topo-path-3"
           class="circuit-base-path"
           d="M260 45V120"
         />
 
-        <!-- Animated Data Packets Traveling Along Paths -->
+        <!-- 沿路径移动的数据粒子 -->
         <circle r="3.2" fill="#c4f36c" class="packet-glow">
           <animateMotion
             dur="2.4s"
@@ -215,7 +236,7 @@ onUnmounted(() => {
 
       <div class="topo-node node-gateway">
         <Box :size="18" />
-        <span>Gateway<small>入口网关 (99.99%)</small></span>
+        <span>Gateway<small>入口网关</small></span>
         <span class="pulse-beacon" />
       </div>
       <div class="topo-node node-service">
@@ -225,12 +246,12 @@ onUnmounted(() => {
       </div>
       <div class="topo-node node-storage">
         <Cpu :size="17" />
-        <span>Database<small>分片数据集群</small></span>
+        <span>Database<small>数据存储</small></span>
         <span class="pulse-beacon cyan" />
       </div>
       <span class="topology-badge mono">
         <Activity :size="10" />
-        <span class="status-dot" /> 1,280 NODES CONNECTED &bull; 0.8ms LATENCY
+        <span class="status-dot" /> REACT FLOW &bull; CONFIG-DRIVEN UI
       </span>
     </div>
 
@@ -239,6 +260,86 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+.mini-window {
+  max-width: 370px;
+}
+.visual-seres {
+  background: radial-gradient(ellipse at 50% 75%, #234d4b, #172b2c 80%);
+}
+.visual-seres .visual-label,
+.visual-seres .concept-label {
+  color: #7bb5af;
+}
+.learning-window {
+  background: #102b2bea;
+  border-color: #4c8e866b;
+  transform: perspective(1000px) rotateY(-5deg) rotateX(6deg) rotateZ(-2deg);
+}
+.learning-window .mini-window-top {
+  color: #b6e1d7;
+  border-color: #4c8e863b;
+}
+.learning-portal {
+  font-size: 6px;
+  color: #8fb9ac;
+}
+.learning-content {
+  padding: 12px;
+}
+.learning-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 9px;
+  color: #d7f1e5;
+}
+.learning-heading span {
+  font-size: 5px;
+  color: #7ba399;
+}
+.learning-flow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+  margin-top: 12px;
+}
+.learning-flow > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  padding: 8px 6px;
+  border: 1px solid #497d704f;
+  background: #1b3a35;
+  border-radius: 4px;
+  color: #a7dcb2;
+}
+.learning-flow strong {
+  font-size: 7px;
+  font-weight: 500;
+}
+.learning-flow span {
+  font-size: 5px;
+  color: #8bb7a5;
+}
+.learning-assistant {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  font-size: 6px;
+  color: #b3e5ba;
+}
+.learning-assistant span:last-child {
+  margin-left: auto;
+  color: #86b7a1;
+}
+@media (max-width: 560px) {
+  .learning-heading span {
+    display: none;
+  }
+}
 .cloud-status-badge {
   display: flex;
   align-items: center;
@@ -359,7 +460,7 @@ onUnmounted(() => {
   font-style: italic;
 }
 
-/* Topology paths */
+/* 拓扑路径流动效果 */
 .circuit-base-path {
   stroke: rgba(122, 156, 104, 0.45);
   stroke-width: 1.5;
