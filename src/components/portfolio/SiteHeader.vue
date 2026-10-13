@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { BackgroundMode } from '../../composables/motionContext'
 import {
   Activity,
   ArrowUpRight,
@@ -12,7 +13,6 @@ import {
   X,
 } from '@lucide/vue'
 import { shallowRef } from 'vue'
-import type { BackgroundMode } from '../../composables/motionContext'
 import { useSoundFx } from '../../composables/useSoundFx'
 
 const props = withDefaults(

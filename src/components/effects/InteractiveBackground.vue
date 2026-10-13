@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, useTemplateRef, watch } from 'vue'
 import type { BackgroundMode } from '../../composables/motionContext'
+import { onMounted, onUnmounted, useTemplateRef, watch } from 'vue'
 import { useSoundFx } from '../../composables/useSoundFx'
 
 const props = withDefaults(
@@ -365,7 +365,7 @@ function drawMesh(ctx: CanvasRenderingContext2D, dt: number, alphaMultiplier = 1
     for (let r = 0; r <= rows; r++) {
       const rowRatio = r / rows
       // 深度透视曲线
-      const depth = Math.pow(rowRatio, 1.8)
+      const depth = rowRatio ** 1.8
       const px = topX + (bottomX - topX) * depth
       const baseY = horizonY + (height - horizonY) * depth
 
@@ -399,7 +399,7 @@ function drawMesh(ctx: CanvasRenderingContext2D, dt: number, alphaMultiplier = 1
   // 2. 绘制横向线条
   for (let r = 1; r <= rows; r++) {
     const rowRatio = r / rows
-    const depth = Math.pow(rowRatio, 1.8)
+    const depth = rowRatio ** 1.8
     const baseY = horizonY + (height - horizonY) * depth
 
     ctx.beginPath()

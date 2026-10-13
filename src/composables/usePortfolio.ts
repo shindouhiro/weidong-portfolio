@@ -1,5 +1,5 @@
-import { onMounted, onUnmounted, ref, shallowRef } from 'vue'
 import type { BackgroundMode } from './motionContext'
+import { onMounted, onUnmounted, ref, shallowRef } from 'vue'
 
 const STORAGE_KEY = 'portfolio_bg_mode'
 
