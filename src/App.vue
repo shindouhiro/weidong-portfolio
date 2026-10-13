@@ -10,20 +10,27 @@ import HeroSection from './components/portfolio/HeroSection.vue'
 import ProjectsSection from './components/portfolio/ProjectsSection.vue'
 import SiteHeader from './components/portfolio/SiteHeader.vue'
 import SkillsSection from './components/portfolio/SkillsSection.vue'
-import { portfolioMotionKey } from './composables/motionContext'
+import { backgroundModeKey, portfolioMotionKey } from './composables/motionContext'
 import { usePortfolio } from './composables/usePortfolio'
 import { useScrollReveal } from './composables/useScrollReveal'
 
-const { animated, activeSection, toggleAnimation } = usePortfolio()
+const {
+  animated,
+  activeSection,
+  toggleAnimation,
+  backgroundMode,
+  setBackgroundMode,
+} = usePortfolio()
 provide(portfolioMotionKey, animated)
+provide(backgroundModeKey, backgroundMode)
 const main = useTemplateRef<HTMLElement>('main')
 useScrollReveal(main, animated)
 </script>
 
 <template>
   <div class="portfolio" :class="{ 'motion-paused': !animated }">
-    <!-- 交互星空背景 -->
-    <InteractiveBackground :animated="animated" />
+    <!-- 交互环境视效背景 (星轨/矩阵/能量网格) -->
+    <InteractiveBackground :animated="animated" :mode="backgroundMode" />
 
     <!-- 跟随光标与点击火花 -->
     <CustomCursor :animated="animated" />
@@ -35,7 +42,9 @@ useScrollReveal(main, animated)
     <SiteHeader
       :animated="animated"
       :active-section="activeSection"
+      :background-mode="backgroundMode"
       @toggle-animation="toggleAnimation"
+      @change-background-mode="setBackgroundMode"
     />
     <main id="main-content" ref="main" class="relative z-10">
       <HeroSection :animated="animated" />
