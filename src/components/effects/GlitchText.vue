@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, inject, onMounted, onUnmounted, shallowRef, watch } from 'vue'
+import { portfolioMotionKey } from '../../composables/motionContext'
 
 const props = withDefaults(
   defineProps<{
@@ -19,15 +20,25 @@ const props = withDefaults(
   },
 )
 
-const displayText = ref(props.text)
-const isGlitching = ref(false)
+const portfolioMotion = inject(portfolioMotionKey, shallowRef(true))
+const motionEnabled = computed(() => props.animated && portfolioMotion.value)
+const displayText = shallowRef(props.text)
+const isGlitching = shallowRef(false)
 let timer: ReturnType<typeof setTimeout> | undefined
+let initialTimer: ReturnType<typeof setTimeout> | undefined
 
 const glyphs = '01#%&*+-/=?@_~^<>[]{}ABCDEF'
 
+function stopScramble() {
+  clearTimeout(timer)
+  clearTimeout(initialTimer)
+  isGlitching.value = false
+  displayText.value = props.text
+}
+
 function scramble() {
-  if (!props.animated) {
-    displayText.value = props.text
+  if (!motionEnabled.value) {
+    stopScramble()
     return
   }
 
@@ -39,6 +50,11 @@ function scramble() {
   let iteration = 0
 
   function frame() {
+    if (!motionEnabled.value) {
+      stopScramble()
+      return
+    }
+
     displayText.value = target
       .split('')
       .map((char, index) => {
@@ -77,14 +93,20 @@ watch(
   },
 )
 
+watch(motionEnabled, (enabled) => {
+  if (!enabled)
+    stopScramble()
+})
+
 onMounted(() => {
-  if (props.autoStart) {
-    setTimeout(scramble, 100)
+  if (props.autoStart && motionEnabled.value) {
+    initialTimer = setTimeout(scramble, 100)
   }
 })
 
 onUnmounted(() => {
   clearTimeout(timer)
+  clearTimeout(initialTimer)
 })
 </script>
 

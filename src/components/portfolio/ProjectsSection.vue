@@ -12,13 +12,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from 'reka-ui'
-import { computed, shallowRef } from 'vue'
+import { computed, inject, shallowRef } from 'vue'
+import { portfolioMotionKey } from '../../composables/motionContext'
 import { useCardSpotlight } from '../../composables/useCardSpotlight'
 import GlitchText from '../effects/GlitchText.vue'
 import ProjectCaseStudy from './ProjectCaseStudy.vue'
 import ProjectVisual from './ProjectVisual.vue'
 
 const category = shallowRef<ProjectCategory | 'all'>('all')
+const animated = inject(portfolioMotionKey, shallowRef(true))
 const { handleCardMouseMove, handleCardMouseLeave } = useCardSpotlight()
 
 const categories: { id: ProjectCategory | 'all', label: string }[] = [
@@ -78,6 +80,7 @@ const filteredProjects = computed<Project[]>(() =>
       <DialogRoot v-for="project in filteredProjects" :key="project.id">
         <article
           class="project-card spotlight-card"
+          :class="`project-tone-${project.id}`"
           @mousemove="handleCardMouseMove"
           @mouseleave="handleCardMouseLeave"
         >
@@ -86,7 +89,13 @@ const filteredProjects = computed<Project[]>(() =>
             class="project-trigger"
             :aria-label="`查看 ${project.name} 项目详情`"
           />
-          <ProjectVisual :kind="project.id" />
+          <span class="project-energy-frame" aria-hidden="true" />
+          <div class="project-preview-shell">
+            <ProjectVisual :kind="project.id" />
+            <div class="project-scan" aria-hidden="true" />
+            <span class="project-preview-corner corner-start" aria-hidden="true" />
+            <span class="project-preview-corner corner-end" aria-hidden="true" />
+          </div>
           <div class="project-card-body">
             <div class="project-meta mono">
               <span>{{ project.categoryLabel }}</span><span>/ {{ project.number }}</span>
@@ -115,10 +124,11 @@ const filteredProjects = computed<Project[]>(() =>
           </div>
         </article>
         <DialogPortal>
-          <DialogOverlay class="dialog-overlay" />
+          <DialogOverlay class="dialog-overlay" :class="{ 'motion-paused': !animated }" />
           <DialogContent
             :id="`project-dialog-${project.id}`"
             class="project-dialog"
+            :class="{ 'motion-paused': !animated }"
           >
             <DialogClose
               :id="`project-close-${project.id}`"

@@ -1572,7 +1572,10 @@ a svg {
 .back-top:hover {
   color: var(--accent);
 }
-.motion-paused * {
+.motion-paused,
+.motion-paused *,
+.motion-paused *::before,
+.motion-paused *::after {
   animation-play-state: paused !important;
 }
 .hero-copy {
@@ -2669,6 +2672,211 @@ a svg {
   animation: none !important;
 }
 
+/* 章节渐进显现，独立位移不覆盖卡片的交互倾斜。 */
+[data-reveal] {
+  transition:
+    opacity 0.7s ease var(--reveal-delay, 0ms),
+    translate 0.7s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
+    transform 0.25s ease,
+    border-color 0.3s,
+    box-shadow 0.3s;
+}
+
+[data-reveal]:not([data-revealed="true"]) {
+  opacity: 0;
+  translate: 0 32px;
+}
+
+[data-reveal][data-revealed="true"],
+[data-reveal]:focus-within,
+.motion-paused [data-reveal] {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.section-heading {
+  position: relative;
+}
+
+.section-heading::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -26px;
+  width: min(210px, 42%);
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent), #66e9b9 35%, transparent);
+  box-shadow: 0 0 14px #b4f57233;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+}
+
+.section-heading[data-revealed="true"]::before,
+.motion-paused .section-heading::before {
+  transform: scaleX(1);
+}
+
+.timeline-item[data-revealed="true"] .timeline-dot {
+  background: var(--accent);
+  box-shadow: 0 0 0 5px #c4f36c0b, 0 0 18px #c4f36c55;
+  transition: background 0.5s, box-shadow 0.7s;
+}
+
+/* 项目卡片使用独立装饰层，所有点击仍由原详情按钮接收。 */
+@property --project-edge-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.project-card {
+  --project-glow: #c4f36c;
+}
+
+.project-tone-seres {
+  --project-glow: #6ce5db;
+}
+
+.project-tone-nebula {
+  --project-glow: #a9b7ff;
+}
+
+.project-tone-atc {
+  --project-glow: #65ebb1;
+}
+
+.project-energy-frame {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  background: conic-gradient(
+    from var(--project-edge-angle),
+    transparent 8%,
+    var(--project-glow) 14%,
+    transparent 23%,
+    transparent 57%,
+    var(--project-glow) 64%,
+    transparent 73%
+  );
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0.22;
+  animation: project-edge-orbit 7s linear infinite paused;
+  transition: opacity 0.4s;
+}
+
+.project-card[data-motion-visible="true"] .project-energy-frame {
+  animation-play-state: running;
+}
+
+.project-card:is(:hover, :focus-within) .project-energy-frame {
+  opacity: 0.95;
+}
+
+.project-preview-shell {
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.project-scan {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s;
+  mix-blend-mode: screen;
+}
+
+.project-scan::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(transparent 0 5px, #bdfbca06 5px 6px);
+}
+
+.project-scan::after {
+  content: "";
+  position: absolute;
+  inset: -45% 0 auto;
+  height: 45%;
+  background: linear-gradient(transparent, color-mix(in srgb, var(--project-glow) 12%, transparent));
+  border-bottom: 1px solid color-mix(in srgb, var(--project-glow) 70%, transparent);
+  box-shadow: 0 7px 25px color-mix(in srgb, var(--project-glow) 12%, transparent);
+  animation: project-scan-pass 3s cubic-bezier(0.4, 0, 0.2, 1) infinite paused;
+}
+
+.project-card:is(:hover, :focus-within) .project-scan {
+  opacity: 1;
+}
+
+.project-card[data-motion-visible="true"]:is(:hover, :focus-within) .project-scan::after {
+  animation-play-state: running;
+}
+
+.project-preview-corner {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: var(--project-glow);
+  border-style: solid;
+  opacity: 0.35;
+  pointer-events: none;
+  transition: width 0.4s, height 0.4s, opacity 0.4s;
+}
+
+.corner-start {
+  top: 14px;
+  right: 14px;
+  border-width: 1px 1px 0 0;
+}
+
+.corner-end {
+  bottom: 14px;
+  left: 14px;
+  border-width: 0 0 1px 1px;
+}
+
+.project-card:is(:hover, :focus-within) .project-preview-corner {
+  width: 24px;
+  height: 24px;
+  opacity: 0.85;
+}
+
+.project-card:focus-within .mini-window {
+  transform: perspective(1000px) rotateY(0) rotateX(0) rotateZ(0);
+}
+
+@keyframes project-edge-orbit {
+  to { --project-edge-angle: 360deg; }
+}
+
+@keyframes project-scan-pass {
+  0%, 12% { translate: 0 0; }
+  85%, 100% { translate: 0 330%; }
+}
+
+.motion-paused [data-reveal] {
+  transition: none;
+}
+
+.motion-paused .hero-copy,
+.motion-paused .hero-art,
+.motion-paused .hero-bottom,
+.dialog-overlay.motion-paused,
+.project-dialog.motion-paused {
+  animation: none;
+}
+
+.motion-paused .project-scan {
+  opacity: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -2678,5 +2886,15 @@ a svg {
   *::after {
     animation: none !important;
     transition: none !important;
+  }
+  [data-reveal] {
+    opacity: 1 !important;
+    translate: none !important;
+  }
+  .section-heading::before {
+    transform: scaleX(1);
+  }
+  .project-scan {
+    display: none;
   }
 }

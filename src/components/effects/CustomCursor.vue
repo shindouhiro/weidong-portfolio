@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, shallowRef } from 'vue'
+import { computed, inject, onMounted, onUnmounted, ref, shallowRef, watch } from 'vue'
+import { portfolioMotionKey } from '../../composables/motionContext'
 import { useSoundFx } from '../../composables/useSoundFx'
 
 const props = defineProps<{
@@ -21,6 +22,9 @@ const isFinePointer = ref(false)
 const isVisible = ref(false)
 const isHovering = ref(false)
 const isClicking = ref(false)
+const portfolioMotion = inject(portfolioMotionKey, shallowRef(true))
+const documentVisible = shallowRef(true)
+const motionEnabled = computed(() => props.animated && portfolioMotion.value && documentVisible.value)
 
 const mouseX = shallowRef(-100)
 const mouseY = shallowRef(-100)
@@ -34,13 +38,17 @@ let animFrame = 0
 const { playClick, playHover } = useSoundFx()
 
 function onMouseMove(e: MouseEvent) {
-  if (!isFinePointer.value)
+  if (!isFinePointer.value || !motionEnabled.value)
     return
+  if (!isVisible.value) {
+    ringX.value = e.clientX
+    ringY.value = e.clientY
+  }
   isVisible.value = true
   mouseX.value = e.clientX
   mouseY.value = e.clientY
 
-  // Check if hovering interactive element
+  // 根据交互目标切换光标状态。
   const target = e.target as HTMLElement | null
   if (target) {
     const interactive = target.closest('a, button, [role="button"], .project-card, .skill-card, .filter-button, .timeline-item, input, .dialog-close')
@@ -52,10 +60,11 @@ function onMouseMove(e: MouseEvent) {
       isHovering.value = false
     }
   }
+  startPhysics()
 }
 
 function onMouseDown(e: MouseEvent) {
-  if (!isFinePointer.value)
+  if (!isFinePointer.value || !motionEnabled.value)
     return
   isClicking.value = true
   playClick()
@@ -68,10 +77,11 @@ function onMouseUp() {
 
 function onMouseLeave() {
   isVisible.value = false
+  stopPhysics()
 }
 
 function createSparks(x: number, y: number) {
-  if (!props.animated)
+  if (!motionEnabled.value)
     return
   const count = 10
   const colors = ['#c4f36c', '#4ade80', '#38bdf8', '#ffffff']
@@ -91,20 +101,24 @@ function createSparks(x: number, y: number) {
     })
   }
 
-  // Cap spark list size
+  // 限制同时保留的火花数量。
   if (sparks.value.length > 50) {
     sparks.value = sparks.value.slice(-30)
   }
 }
 
 function updatePhysics() {
+  animFrame = 0
+  if (!motionEnabled.value)
+    return
+
   if (isFinePointer.value && isVisible.value) {
-    // Lerp outer ring
+    // 平滑跟随外环。
     const ease = isHovering.value ? 0.35 : 0.2
     ringX.value += (mouseX.value - ringX.value) * ease
     ringY.value += (mouseY.value - ringY.value) * ease
 
-    // Update sparks
+    // 更新点击火花。
     if (sparks.value.length > 0) {
       for (let i = sparks.value.length - 1; i >= 0; i--) {
         const s = sparks.value[i]
@@ -118,23 +132,52 @@ function updatePhysics() {
         }
       }
     }
+    animFrame = requestAnimationFrame(updatePhysics)
   }
-  animFrame = requestAnimationFrame(updatePhysics)
 }
 
+function startPhysics() {
+  if (!animFrame && motionEnabled.value && isFinePointer.value && isVisible.value)
+    animFrame = requestAnimationFrame(updatePhysics)
+}
+
+function stopPhysics() {
+  cancelAnimationFrame(animFrame)
+  animFrame = 0
+  sparks.value = []
+  isClicking.value = false
+  isHovering.value = false
+}
+
+function onVisibilityChange() {
+  documentVisible.value = !document.hidden
+}
+
+watch(motionEnabled, (enabled) => {
+  if (enabled) {
+    startPhysics()
+  }
+  else {
+    stopPhysics()
+    isVisible.value = false
+  }
+})
+
 onMounted(() => {
+  onVisibilityChange()
+  document.addEventListener('visibilitychange', onVisibilityChange)
   isFinePointer.value = window.matchMedia('(pointer: fine)').matches
   if (isFinePointer.value) {
     window.addEventListener('mousemove', onMouseMove, { passive: true })
     window.addEventListener('mousedown', onMouseDown, { passive: true })
     window.addEventListener('mouseup', onMouseUp, { passive: true })
     document.addEventListener('mouseleave', onMouseLeave)
-    animFrame = requestAnimationFrame(updatePhysics)
   }
 })
 
 onUnmounted(() => {
-  cancelAnimationFrame(animFrame)
+  stopPhysics()
+  document.removeEventListener('visibilitychange', onVisibilityChange)
   window.removeEventListener('mousemove', onMouseMove)
   window.removeEventListener('mousedown', onMouseDown)
   window.removeEventListener('mouseup', onMouseUp)
@@ -144,11 +187,11 @@ onUnmounted(() => {
 
 <template>
   <div
-    v-if="isFinePointer && isVisible"
+    v-if="motionEnabled && isFinePointer && isVisible"
     class="custom-cursor-container"
     aria-hidden="true"
   >
-    <!-- Ambient Torch Spotlight -->
+    <!-- 跟随鼠标的环境聚光 -->
     <div
       class="cursor-ambient-torch"
       :style="{
@@ -156,7 +199,7 @@ onUnmounted(() => {
       }"
     />
 
-    <!-- Precision Dot -->
+    <!-- 中心定位光点 -->
     <div
       class="cursor-dot"
       :class="{ clicking: isClicking, hovering: isHovering }"
@@ -165,7 +208,7 @@ onUnmounted(() => {
       }"
     />
 
-    <!-- Magnetic Ring / Reticle -->
+    <!-- 磁吸外环与准星 -->
     <div
       class="cursor-ring"
       :class="{
@@ -182,7 +225,7 @@ onUnmounted(() => {
       <div v-if="isHovering" class="reticle-corner bottom-right" />
     </div>
 
-    <!-- Sparks Canvas / Elements -->
+    <!-- 点击火花 -->
     <div
       v-for="s in sparks"
       :key="s.id"

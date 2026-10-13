@@ -1,5 +1,18 @@
 # 验证记录
 
+## 2026-10-13 视觉特效增强
+
+- `pnpm lint`、`pnpm typecheck`、`pnpm build` 全部通过；最终新建预览标签页无 console error / warning。
+- 首屏新增双轨道、尾迹光粒子与核心光晕，滚动控制环面旋转与收缩；代码检查确认离屏、后台、暂停和系统减动均停止首屏帧循环。
+- 章节按组显现；卡片进入视口后边缘动画运行，离开视口后暂停；键盘聚焦可触发扫描线，聚焦内容保持可见。
+- AI 分类显示 AI-CloudOS、NebulaAI；全部分类恢复四个项目；NebulaAI 弹窗 Escape 关闭后焦点返回原按钮。
+- 关闭动效后所有待入场元素显示、四张卡片边缘动画均为 paused、自定义光标隐藏；ATC 弹窗保持不透明且入场动画为 none。
+- 联系区进入视口后极光动画运行；邮箱复制显示成功提示与绿色勾选反馈；首屏离开视口后处于停止状态。
+- 1280px、390px、320px 页面均无横向溢出，320px 圆环区域宽度为 280px；移动导航跳转后正常关闭。
+- 页面按钮与链接无缺失 ID，未发现重复 ID。窄屏预览结束后恢复默认视口。
+- 系统减动分支经过代码检查，未更改用户的系统偏好。
+- 预览截图：`docs/previews/visual-effects-desktop.jpg`、`docs/previews/visual-effects-contact.jpg`、`docs/previews/visual-effects-mobile.jpg`。
+
 ## 2026-10-13 下载简历 PDF 美化
 
 - PDF 为三页 A4，无空白页；逐页渲染检查，无文字裁切、重叠或标题与正文跨页。

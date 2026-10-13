@@ -14,9 +14,14 @@ import {
   Terminal,
   Workflow,
 } from '@lucide/vue'
-import { onMounted, onUnmounted, shallowRef } from 'vue'
+import { computed, inject, onMounted, onUnmounted, shallowRef, useTemplateRef, watch } from 'vue'
+import { portfolioMotionKey } from '../../composables/motionContext'
 
 const props = defineProps<{ kind: string }>()
+const portfolioMotion = inject(portfolioMotionKey, shallowRef(true))
+const documentVisible = shallowRef(true)
+const motionEnabled = computed(() => portfolioMotion.value && documentVisible.value)
+const topology = useTemplateRef<SVGSVGElement>('topology')
 
 // NebulaAI 流式文本概念演示
 const nebulaStreamText = shallowRef('')
@@ -25,13 +30,15 @@ let streamTimer: ReturnType<typeof setTimeout> | undefined
 const fullStreamMessage = '增量解析持续输出，避免长文本的全量重绘，让每一次回应清晰流动。'
 
 function startStreaming() {
-  if (props.kind !== 'nebula')
+  if (props.kind !== 'nebula' || !motionEnabled.value)
     return
   let idx = 0
   nebulaStreamText.value = ''
   isTyping.value = true
 
   function step() {
+    if (!motionEnabled.value)
+      return
     if (idx < fullStreamMessage.length) {
       nebulaStreamText.value = fullStreamMessage.slice(0, ++idx)
       streamTimer = setTimeout(step, 45 + Math.random() * 35)
@@ -55,7 +62,21 @@ const cloudLogs = [
   'Angular + RxJS · 复杂业务交付',
 ]
 
-onMounted(() => {
+function stopTimers() {
+  clearTimeout(streamTimer)
+  clearInterval(cloudTimer)
+}
+
+function syncMotion() {
+  stopTimers()
+  if (!motionEnabled.value) {
+    nebulaStreamText.value = fullStreamMessage
+    isTyping.value = false
+    topology.value?.pauseAnimations()
+    return
+  }
+
+  topology.value?.unpauseAnimations()
   if (props.kind === 'nebula') {
     startStreaming()
   }
@@ -64,16 +85,28 @@ onMounted(() => {
       cloudStep.value = (cloudStep.value + 1) % cloudLogs.length
     }, 2400)
   }
+}
+
+function onVisibilityChange() {
+  documentVisible.value = !document.hidden
+}
+
+watch([motionEnabled, () => props.kind], syncMotion, { flush: 'post' })
+
+onMounted(() => {
+  onVisibilityChange()
+  document.addEventListener('visibilitychange', onVisibilityChange)
+  syncMotion()
 })
 
 onUnmounted(() => {
-  clearTimeout(streamTimer)
-  clearInterval(cloudTimer)
+  stopTimers()
+  document.removeEventListener('visibilitychange', onVisibilityChange)
 })
 </script>
 
 <template>
-  <div class="project-visual" :class="`visual-${kind}`" aria-hidden="true">
+  <div class="project-visual" :class="[`visual-${kind}`, { 'motion-paused': !motionEnabled }]" aria-hidden="true">
     <span class="visual-label mono">{{
       kind === "seres"
         ? "LEARN. ASSESS. GROW."
@@ -193,7 +226,7 @@ onUnmounted(() => {
 
     <!-- ATC 拓扑概念示意 -->
     <div v-else class="topology-preview">
-      <svg viewBox="0 0 340 170" class="topology-lines">
+      <svg ref="topology" viewBox="0 0 340 170" class="topology-lines">
         <!-- 拓扑连接路径 -->
         <path
           class="circuit-base-path"
