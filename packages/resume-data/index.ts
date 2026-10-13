@@ -6,7 +6,7 @@ export const profile = {
   phone: '19147835461',
   github: 'https://github.com/shindouhiro',
   website: 'https://shindouhiro.github.io/hikaru/projects/demos.html',
-  resume: '/resume.pdf',
+  resume: '/resume.pdf?v=20261013-design',
   education: '广东岭南职业技术学院',
   major: '计算机网络 · 大专',
   educationPeriod: '2010.09 — 2013.06',

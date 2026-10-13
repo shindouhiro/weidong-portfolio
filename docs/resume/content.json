@@ -1,0 +1,130 @@
+{
+  "name": "吴伟东",
+  "englishName": "WEIDONG WU",
+  "role": "前端工程师",
+  "location": "不限",
+  "email": "shindouhiro@gmail.com",
+  "phone": "19147835461",
+  "github": "https://github.com/shindouhiro",
+  "website": "https://shindouhiro.github.io/hikaru/projects/demos.html",
+  "skills": [
+    ["前端框架", "React / Angular / Vue"],
+    ["构建与工程", "Vite / Webpack / Rollup / Monorepo"],
+    ["可视化", "React Flow / D3.js"],
+    ["状态与数据", "Valtio / SWR / React Query / RxJS"],
+    ["UI 与样式", "Tailwind CSS / MUI / Ant Design / Element Plus"],
+    ["部署与后端", "GitHub Actions / Jenkins / Docker / Nginx / Kubernetes / Node.js / Ruby / PHP"],
+    ["终端工作流", "Neovim / LazyGit / Yazi / tmux"],
+    ["AI 辅助研发", "Claude Code / Codex CLI / OpenCode / Antigravity / Cursor"]
+  ],
+  "projects": [
+    {
+      "name": "赛力斯企业培训与学习管理平台",
+      "label": "企业业务 / 全栈开发",
+      "intro": "面向企业员工培训与岗位能力提升，包含管理端、学员端和登录门户。覆盖课程与课件管理、在线学习、题库与考试、培训报名审批、岗位晋升、证书及统计报表，实现培训任务下发、学习过程跟踪、考试评估与培训结果管理，并集成 AI 学习助手。",
+      "stack": [
+        ["前端", "React 18 / TypeScript / Vite / TanStack Router / Ant Design / Pro Components / Tailwind CSS / ahooks"],
+        ["后端", "Java / Spring Boot 4 / Spring Cloud Gateway / MyBatis-Flex / Sa-Token / MapStruct"],
+        ["数据与通信", "MySQL / Redis / Liquibase / WebSocket / SSE"],
+        ["工程与测试", "pnpm Workspace / Catalogs / Maven 多模块 / ESLint / Vitest / React Testing Library / Playwright / JUnit / Docker / Nginx / OpenAPI / Knife4j"]
+      ],
+      "bullets": [
+        ["前后端业务开发", "实现课程学习、在线考试、培训审批与统计报表等业务功能，完成页面交互、接口设计、数据持久化及联调，支持管理端与学员端业务协同。"],
+        ["前端模块化建设", "基于 React、TypeScript 和 TanStack Router 按业务划分页面、服务与 Hooks；通过 pnpm Workspace 共享类型及公共能力，统一长整型 ID 的字符串传输，避免 JavaScript 数值精度丢失。"],
+        ["认证与权限控制", "基于 Sa-Token 实现登录认证与接口权限校验，通过 Spring Cloud Gateway 统一 API 入口、路由转发与跨域处理，结合角色及数据范围约束业务访问。"],
+        ["考试提交一致性", "以服务端持久化开考时间实现考试计时；结合数据库唯一约束、行锁与事务控制实现幂等交卷，避免刷新重置计时、重复提交及重复计次。"],
+        ["实时通知与 AI 集成", "使用 WebSocket 与 Redis 支持站内通知及在线状态管理，在业务事务提交后触发通知推送；通过 SSE 对接 AI 平台，支持 AG-UI 流式事件消费、会话管理与历史消息回显。"],
+        ["工程质量与部署", "使用 Liquibase 管理数据库版本迁移，结合前端单元测试、组件测试、Playwright 端到端测试及后端测试验证业务流程，通过 Docker 与 Nginx 支持应用容器化部署。"]
+      ]
+    },
+    {
+      "name": "AI-CloudOS 数智化研发平台",
+      "label": "核心架构师 / 全栈负责人",
+      "intro": "基于 Angular + pnpm Monorepo 构建 AI 驱动研发平台，支撑营销交互、流程系统及多端应用开发。",
+      "metrics": [["30%+", "构建效率提升"], ["90%+", "代码风格问题减少"], ["20%+", "首屏体积降低"]],
+      "bullets": [
+        ["架构与依赖治理", "设计 Monorepo 架构与单源真相（SSOT）依赖治理，构建效率提升 30%+，提升 CI 稳定性。"],
+        ["统一研发规范", "建立 @antfu/eslint-config 与 CI 门禁，代码风格问题减少 90%+。"],
+        ["资产流水线", "构建 Iconify 资产流水线（SVG 转 JSON + 按需加载），首屏体积降低 20%+。"],
+        ["AI 脚本集成", "设计 JIT Mounting，以符号链接动态挂载 AI 脚本，提升复杂功能开发效率。"],
+        ["复杂系统交付", "基于 Angular + RxJS 完成复杂系统单人交付，验证 AI + 工程化研发模式。"]
+      ]
+    },
+    {
+      "name": "NebulaAI 企业级 AI Agent 平台",
+      "label": "AI 流式渲染 / 性能优化",
+      "intro": "基于 Next.js + SWR 构建 AI Agent 平台，支持多端部署与系统集成。",
+      "bullets": [
+        ["流式渲染重构", "引入 streamdown 替代 react-markdown，重构流式渲染链路。"],
+        ["增量解析", "基于 Incremental Parsing 实现增量更新，避免全量解析与重绘。"],
+        ["复杂度优化", "在该流式渲染场景下，将每次增量更新复杂度由 O(N) / O(N²) 降至 O(1)，消除长文本卡顿。"],
+        ["交互稳定性", "优化 DOM 更新与渲染稳定性，实现流畅的打字机体验。"]
+      ]
+    },
+    {
+      "name": "ATC 应用拓扑编排平台",
+      "label": "云原生可视化架构工具 / 阿里云上线",
+      "intro": "基于 React + React Flow 构建可视化编排平台，实现应用拓扑设计与调度管理。",
+      "bullets": [
+        ["配置驱动 UI", "设计 DDD Schema + TypeScript 类型系统，实现配置驱动 UI。"],
+        ["引擎深度定制", "将节点、连线与业务表单绑定，支持复杂业务编排。"],
+        ["设计工具交互", "实现撤销重做、分组与自动布局等设计工具级交互能力。"],
+        ["节点性能优化", "优化大规模节点渲染性能，将操作延迟降至 1 秒以内。"],
+        ["文件与列表优化", "实现 Jar / Docker 大文件分片上传与虚拟列表优化。"],
+        ["团队推进", "负责架构设计、任务拆分与 Code Review，带领 3 人团队推进落地。"]
+      ]
+    }
+  ],
+  "experiences": [
+    {
+      "company": "深圳行云创新科技有限公司",
+      "role": "前端负责人",
+      "period": "2021.05 - 至今",
+      "bullets": [
+        ["工程治理", "基于 pnpm Monorepo 建立单源真相（SSOT）治理体系，提升构建效率 30%+，实现多业务线解耦。"],
+        ["AI 研发范式", "设计 JIT Mounting 动态挂载技术集成 AI 脚本，利用 AI 工具实现团队交付效率提升 30%。"],
+        ["性能调优", "研发 Incremental Parsing 增量解析算法，在 AI 流式渲染场景中将增量更新复杂度从 O(N²) 降至 O(1)，消除长文本卡顿。"],
+        ["可视化编排", "基于 React Flow 深度定制云原生拓扑平台，已在阿里云上线，支持千级节点秒级交互与大文件分片上传。"],
+        ["工程规范", "落地全链路 CI 门禁与自动化资产流水线，代码风格问题减少 90%，首屏 Bundle 体积优化 20%。"]
+      ]
+    },
+    {
+      "company": "盛业信息技术服务有限公司",
+      "role": "前端小组长",
+      "period": "2019.09 - 2021.05",
+      "bullets": [
+        ["动态换肤", "基于 CSS Variables 设计动态换肤系统，支持多场景样式解耦与定制。"],
+        ["数据可视化", "结合 ECharts 与 D3.js，实现数据的动态拓扑展示。"],
+        ["权限体系", "基于 RBAC 模型设计可配置权限路由方案，统一鉴权。"],
+        ["质量保障", "建立 Code Review 规范与公共组件维护机制，提升代码复用率并降低线上事故率。"]
+      ]
+    },
+    {
+      "company": "深圳创伟云科科技有限公司",
+      "role": "Rails 工程师",
+      "period": "2015.12 - 2017",
+      "bullets": [
+        ["多租户后台", "参与 Ruby on Rails 多租户后台架构设计与实现，支撑多个商家独立管理订单、库存及员工权限。"],
+        ["API 与查询优化", "负责核心业务后端 API，通过 ActiveRecord 优化复杂联表查询，报表生成效率提升 30%。"],
+        ["小程序与官网", "对接小程序数据接口与前端交互，支持 Web 向移动端迁移；迭代维护“平行进口车”官网，优化 SEO 与页面加载速度，提升品牌曝光度。"],
+        ["部署与活动交付", "独立负责 Capistrano / Mina 自动化部署，搭建 Nginx + Puma 服务，支持高可用发布与平滑切换；配合市场部开发高并发促销活动页，以缓存策略应对短期流量峰值。"]
+      ]
+    },
+    {
+      "company": "天地网科技有限公司",
+      "role": "Rails 工程师",
+      "period": "2014.06 - 2015.11",
+      "bullets": [
+        ["界面与后台", "负责核心页面高质量还原与交互体验设计，研发后台系统，提供标准化 JSON 接口与高性能数据服务。"],
+        ["微信生态与跨端", "负责微信小程序、公众号、微信支付及第三方支付平台开发；负责 Hybrid 应用、JSBridge 通信桥接与多端打包发布。"],
+        ["可视化与基础设施", "负责大数据可视化前端方案及公司前端基础架构搭建。"]
+      ]
+    }
+  ],
+  "education": {
+    "school": "广东岭南职业技术学院",
+    "major": "计算机网络",
+    "degree": "大专",
+    "period": "2010.09 - 2013.06"
+  }
+}
