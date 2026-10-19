@@ -6,7 +6,7 @@ export const profile = {
   phone: '19147835461',
   github: 'https://github.com/shindouhiro',
   website: 'https://shindouhiro.github.io/hikaru/projects/demos.html',
-  resume: '/resume.pdf?v=20261013-design',
+  resume: '/resume.pdf?v=20261019-shechuan-company',
   education: '广东岭南职业技术学院',
   major: '计算机网络 · 大专',
   educationPeriod: '2010.09 — 2013.06',
@@ -161,15 +161,16 @@ export const projects: Project[] = [
 export const experiences = [
   { id: 'xingyun', period: '2021.05 — 至今', company: '深圳行云创新科技有限公司', role: '前端负责人', current: true, summary: '聚焦 AI 研发范式、前端工程化与云原生可视化，推动复杂产品从架构到交付。', achievements: ['Monorepo 与 SSOT 治理，构建效率提升 30%+', 'AI 辅助研发与 JIT Mounting，团队交付效率提升 30%', '增量解析、千级节点交互、全链路 CI 门禁'] },
   { id: 'shengye', period: '2019.09 — 2021.05', company: '盛业信息技术服务有限公司', role: '前端小组长', current: false, summary: '打造可复用的前端基础能力，兼顾业务体验、权限体系与团队质量。', achievements: ['CSS Variables 动态换肤系统', 'ECharts / D3.js 数据与拓扑可视化', 'RBAC 权限路由、公共组件与 Code Review 规范'] },
+  { id: 'shechuan', period: '2017 — 2019', company: '四川涉川网络科技有限公司', role: '全栈工程师', current: false, summary: '参与分销系统开发，使用 Taro、React Native 与 Node.js 技术栈完成多端业务及后端服务。', achievements: ['分销系统业务页面、服务端接口与前后端联调', 'Taro 小程序与 React Native 移动端开发', '基于 Koa / Express / hapi 开发与维护业务 API'] },
   { id: 'chuangwei', period: '2015 — 2017', company: '深圳创伟云科科技有限公司', role: 'Rails 工程师', current: false, summary: '参与多租户后台、核心业务 API 与自动化部署，积累完整的全栈交付经验。', achievements: ['Ruby on Rails 多店铺管理系统', 'ActiveRecord 查询优化，报表生成效率提升 30%', 'Capistrano / Mina 部署与 Nginx + Puma 服务'] },
   { id: 'tiandi', period: '2014.06 — 2015.11', company: '天地网科技有限公司', role: 'Rails 工程师', current: false, summary: '从高质量页面还原到后台 API，探索跨端应用与前端基础设施。', achievements: ['UI / UX 实现与后台 JSON 接口', '微信生态、支付集成与 Hybrid 跨端开发', '数据可视化与前端基础架构'] },
 ]
 
 export const skillGroups = [
-  { id: 'frontend', number: '01', title: '界面与交互', subtitle: 'FRONTEND', icon: 'code', items: ['React', 'Angular', 'Vue', 'TypeScript', 'Tailwind CSS', 'TanStack Router', 'Ant Design'] },
+  { id: 'frontend', number: '01', title: '界面与交互', subtitle: 'FRONTEND', icon: 'code', items: ['React', 'Angular', 'Vue', 'Taro', 'React Native', 'TypeScript', 'Tailwind CSS', 'TanStack Router', 'Ant Design'] },
   { id: 'engineering', number: '02', title: '架构与工程化', subtitle: 'ENGINEERING', icon: 'layers', items: ['pnpm Monorepo', 'Vite', 'Webpack', 'Rollup', 'CI/CD', 'pnpm Catalogs'] },
   { id: 'visualization', number: '03', title: '可视化与数据', subtitle: 'VISUALIZATION', icon: 'workflow', items: ['React Flow', 'D3.js', 'RxJS', 'Valtio', 'React Query', 'SWR'] },
-  { id: 'backend', number: '04', title: '全栈与基础设施', subtitle: 'FULL STACK', icon: 'server', items: ['Java / Spring Boot', 'Node.js', 'Ruby', 'PHP', 'MySQL / Redis', 'Docker', 'Nginx', 'Kubernetes'] },
+  { id: 'backend', number: '04', title: '全栈与基础设施', subtitle: 'FULL STACK', icon: 'server', items: ['Java / Spring Boot', 'Node.js', 'Koa', 'Express', 'hapi', 'NestJS', 'Ruby / Rails', 'PHP', 'ThinkPHP', 'Laravel', 'MySQL / Redis', 'Docker', 'Nginx', 'Kubernetes'] },
   { id: 'ai', number: '05', title: 'AI 辅助研发', subtitle: 'AI WORKFLOW', icon: 'sparkles', items: ['Claude Code', 'Codex CLI', 'OpenCode', 'Cursor', 'Antigravity'] },
   { id: 'tools', number: '06', title: '开发者工作流', subtitle: 'DEVELOPER TOOLS', icon: 'terminal', items: ['Neovim', 'LazyGit', 'Yazi', 'tmux', 'GitHub Actions', 'Jenkins', 'Vitest', 'Playwright', 'JUnit'] },
 ]

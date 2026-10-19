@@ -60,6 +60,9 @@ BODY = ParagraphStyle(
     textColor=INK, wordWrap="CJK", alignment=TA_LEFT,
     splitLongWords=False, allowWidows=False, allowOrphans=False,
 )
+EXPERIENCE_BODY = ParagraphStyle(
+    "工作经历正文", parent=BODY, fontSize=9, leading=13,
+)
 SMALL = ParagraphStyle(
     "技术细节", parent=BODY, fontSize=8.25, leading=11.5, textColor=MUTED,
 )
@@ -102,12 +105,12 @@ def rows(items, label_width=72):
     return table
 
 
-def bullets(items):
+def bullets(items, style=BODY, spacing=4.2):
     result = []
     for label, text in items:
         result.extend([
-            para(f'<font color="#25766B">•</font> <b>{plain(label)}</b>  {plain(text)}'),
-            Spacer(1, 4.2),
+            para(f'<font color="#25766B">•</font> <b>{plain(label)}</b>  {plain(text)}', style),
+            Spacer(1, spacing),
         ])
     return result
 
@@ -158,7 +161,7 @@ def experience(item):
         ("TOPPADDING", (0, 0), (-1, -1), 0),
         ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
     ]))
-    return [title, Spacer(1, 3), para(plain(item["role"]), SUBTITLE), Spacer(1, 7)] + bullets(item["bullets"])
+    return [title, Spacer(1, 3), para(plain(item["role"]), SUBTITLE), Spacer(1, 6)] + bullets(item["bullets"], EXPERIENCE_BODY, spacing=3)
 
 
 def linked_text(pdf, text, url, x, y, font="ResumeSC", size=8.5):
@@ -192,7 +195,8 @@ def header(pdf, page):
         pdf.setFont("ResumeSC", 8.5)
         pdf.drawString(LEFT, HEIGHT - 121, f'地点：{DATA["location"]}')
         linked_text(pdf, "作品演示：" + DATA["website"], DATA["website"], LEFT + 73, HEIGHT - 121, size=7.5)
-        top = HEIGHT - 147
+        linked_text(pdf, "在线简历：" + DATA["portfolio"], DATA["portfolio"], LEFT + 73, HEIGHT - 136, size=7.5)
+        top = HEIGHT - 162
     else:
         pdf.setFont("ResumeSCBold", 10)
         pdf.setFillColor(INK)
@@ -219,7 +223,7 @@ def page_content():
         second += project(item, i) + [Spacer(1, 17)]
     third = section("工作经历", "PROFESSIONAL EXPERIENCE")
     for item in DATA["experiences"]:
-        third += experience(item) + [Spacer(1, 12)]
+        third += experience(item) + [Spacer(1, 10)]
     education = DATA["education"]
     third += section("教育经历", "EDUCATION") + [
         para(plain(education["school"]), TITLE), Spacer(1, 4),

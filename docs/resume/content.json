@@ -7,13 +7,16 @@
   "phone": "19147835461",
   "github": "https://github.com/shindouhiro",
   "website": "https://shindouhiro.github.io/hikaru/projects/demos.html",
+  "portfolio": "https://shindouhiro.github.io/weidong-portfolio/",
   "skills": [
     ["前端框架", "React / Angular / Vue"],
+    ["跨端框架", "Taro / React Native"],
+    ["后端框架", "Node.js（Koa / Express / hapi / NestJS）/ Spring Boot / Ruby on Rails / PHP（ThinkPHP / Laravel）"],
     ["构建与工程", "Vite / Webpack / Rollup / Monorepo"],
     ["可视化", "React Flow / D3.js"],
     ["状态与数据", "Valtio / SWR / React Query / RxJS"],
     ["UI 与样式", "Tailwind CSS / MUI / Ant Design / Element Plus"],
-    ["部署与后端", "GitHub Actions / Jenkins / Docker / Nginx / Kubernetes / Node.js / Ruby / PHP"],
+    ["部署与服务", "GitHub Actions / Jenkins / Docker / Nginx / Kubernetes / MySQL / Redis"],
     ["终端工作流", "Neovim / LazyGit / Yazi / tmux"],
     ["AI 辅助研发", "Claude Code / Codex CLI / OpenCode / Antigravity / Cursor"]
   ],
@@ -97,6 +100,16 @@
         ["数据可视化", "结合 ECharts 与 D3.js，实现数据的动态拓扑展示。"],
         ["权限体系", "基于 RBAC 模型设计可配置权限路由方案，统一鉴权。"],
         ["质量保障", "建立 Code Review 规范与公共组件维护机制，提升代码复用率并降低线上事故率。"]
+      ]
+    },
+    {
+      "company": "四川涉川网络科技有限公司",
+      "role": "全栈工程师",
+      "period": "2017 - 2019",
+      "bullets": [
+        ["分销系统", "参与分销系统业务开发与维护，完成业务页面、服务端接口及前后端联调。"],
+        ["多端开发", "使用 Taro 与 React Native 开发小程序及移动端应用，支持分销业务的多端访问。"],
+        ["Node.js 后端", "使用 Koa、Express 与 hapi 开发和维护业务 API，参与服务端业务逻辑与接口组织。"]
       ]
     },
     {
